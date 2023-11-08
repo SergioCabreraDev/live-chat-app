@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat en Línea</title>
+</head>
+<body>
+    <div id="chat">
+        <div id="mensajes"></div>
+        <input type="text" id="username" placeholder="Tu nombre de usuario...">
+        <input type="text" id="mensaje" placeholder="Escribe tu mensaje...">
+        <button onclick="enviarMensaje()">Enviar</button>
+    </div>
+
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+       var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+function enviarMensaje() {
+    var username = document.getElementById('username').value;
+    var mensaje = document.getElementById('mensaje').value;
+
+    if (username && mensaje) {
+        var data = {
+            username: username,
+            mensaje: mensaje
+        };
+
+        socket.emit('mensaje', data);
+        document.getElementById('mensaje').value = '';  // Limpiar el campo de texto del mensaje
+    } else {
+        alert('Por favor, ingresa tu nombre de usuario y mensaje.');
+    }
+}
+
+socket.on('mensaje', function(msg) {
+    var mensajesDiv = document.getElementById('mensajes');
+    var nuevoMensaje = document.createElement('p');
+    nuevoMensaje.innerHTML = msg;
+    mensajesDiv.appendChild(nuevoMensaje);
+});
+
+    </script>
+</body>
+</html>
