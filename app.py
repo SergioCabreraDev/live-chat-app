@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO
 import os
-import fcntl
+
 app = Flask(__name__)
 socketio = SocketIO(app)
 
